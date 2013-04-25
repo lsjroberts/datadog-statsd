@@ -1,4 +1,7 @@
 <?php
+
+namespace DataDog;
+
 /**
  * Datadog implementation of StatsD
  * Added the ability to Tag!
