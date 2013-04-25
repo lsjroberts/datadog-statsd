@@ -10,7 +10,7 @@
  * @author Alex Corley <anthroprose@gmail.com>
  **/
  
-class Datadogstatsd {
+class Statsd {
 
 	static private $__server = 'localhost';
     static private $__datadogHost;

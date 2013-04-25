@@ -1,9 +1,10 @@
 {
-    "name": "DataDog/php-datadogstatsd",
+    "name": "data-dog/statsd",
     "type": "library",
+    "license": "MIT",
     "description": "This is an extremely simple PHP datadogstatsd client",
-    "keywords": ["DataDog", "PHP"],
+    "keywords": ["DataDog", "PHP", "Statsd"],
     "autoload": {
-    	"psr-0" : { "": "libraries/" }
+    	"psr-0" : { "": "src/" }
     }
 }
