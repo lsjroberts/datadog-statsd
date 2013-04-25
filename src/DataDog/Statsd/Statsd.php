@@ -16,11 +16,11 @@ namespace DataDog\Statsd;
 class Statsd
 {
 
-    private static $server = 'localhost';
-    private static $datadogHost;
-    private static $eventUrl = '/api/v1/events';
-    private static $apiKey;
-    private static $applicationKey;
+    public static $server = 'localhost';
+    public static $datadogHost;
+    public static $eventUrl = '/api/v1/events';
+    public static $apiKey;
+    public static $applicationKey;
 
     /**
      * Log timing information
