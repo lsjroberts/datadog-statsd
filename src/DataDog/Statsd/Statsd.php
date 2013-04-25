@@ -1,6 +1,6 @@
 <?php
 
-namespace DataDog;
+namespace DataDog\Statsd;
 
 /**
  * Datadog implementation of StatsD
