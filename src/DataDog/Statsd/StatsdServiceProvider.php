@@ -31,6 +31,7 @@ class StatsdServiceProvider extends ServiceProvider {
 		$this->app['statsd'] = $this->app->share(function($app)
 		{
 			$statsd = new Statsd;
+			
 			$statsd->datadogHost = $app['config']->get('statsd::host');
 			$statsd->eventUrl = $app['config']->get('statsd::event_url');
 			$statsd->apiKey = $app['config']->get('statsd::api_key');

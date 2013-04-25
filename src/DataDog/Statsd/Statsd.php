@@ -16,11 +16,11 @@ namespace DataDog\Statsd;
 class Statsd
 {
 
-    public static $server = 'localhost';
-    public static $datadogHost;
-    public static $eventUrl = '/api/v1/events';
-    public static $apiKey;
-    public static $applicationKey;
+    public $server = 'localhost';
+    public $datadogHost;
+    public $eventUrl = '/api/v1/events';
+    public $apiKey;
+    public $applicationKey;
 
     /**
      * Log timing information
@@ -29,9 +29,9 @@ class Statsd
      * @param float $time The ellapsed time (ms) to log
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
-    public static function timing($stat, $time, $sampleRate = 1, array $tags = null)
+    public function timing($stat, $time, $sampleRate = 1, array $tags = null)
     {
-        static::send(array($stat => "$time|ms"), $sampleRate, $tags);   
+        $this->send(array($stat => "$time|ms"), $sampleRate, $tags);   
     }
 
     /**
@@ -41,9 +41,9 @@ class Statsd
      * @param float $value The value
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
-    public static function gauge($stat, $value, $sampleRate = 1, array $tags = null)
+    public function gauge($stat, $value, $sampleRate = 1, array $tags = null)
     {
-        static::send(array($stat => "$value|g"), $sampleRate, $tags);
+        $this->send(array($stat => "$value|g"), $sampleRate, $tags);
     }
 
     /**
@@ -53,9 +53,9 @@ class Statsd
      * @param float $value The value
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
-    public static function histogram($stat, $value, $sampleRate = 1, array $tags = null)
+    public function histogram($stat, $value, $sampleRate = 1, array $tags = null)
     {
-        static::send(array($stat => "$value|h"), $sampleRate, $tags);
+        $this->send(array($stat => "$value|h"), $sampleRate, $tags);
     }
 
     /**
@@ -65,9 +65,9 @@ class Statsd
      * @param float $value The value
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
-    public static function set($stat, $value, $sampleRate = 1, array $tags = null)
+    public function set($stat, $value, $sampleRate = 1, array $tags = null)
     {
-        static::send(array($stat => "$value|s"), $sampleRate, $tags);
+        $this->send(array($stat => "$value|s"), $sampleRate, $tags);
     }
 
 
@@ -78,9 +78,9 @@ class Statsd
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public static function increment($stats, $sampleRate = 1, array $tags = null)
+    public function increment($stats, $sampleRate = 1, array $tags = null)
     {
-        static::updateStats($stats, 1, $sampleRate, $tags);
+        $this->updateStats($stats, 1, $sampleRate, $tags);
     }
 
     /**
@@ -90,9 +90,9 @@ class Statsd
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public static function decrement($stats, $sampleRate = 1, array $tags = null)
+    public function decrement($stats, $sampleRate = 1, array $tags = null)
     {
-        static::updateStats($stats, -1, $sampleRate, $tags);
+        $this->updateStats($stats, -1, $sampleRate, $tags);
     }
 
     /**
@@ -105,7 +105,7 @@ class Statsd
      * 
      * @return boolean
      **/
-    public static function updateStats($stats, $delta = 1, $sampleRate = 1, array $tags = null)
+    public function updateStats($stats, $delta = 1, $sampleRate = 1, array $tags = null)
     {
         if (!is_array($stats)) {
             $stats = array($stats);
@@ -117,7 +117,7 @@ class Statsd
             $data[$stat] = "$delta|c";
         }
 
-        static::send($data, $sampleRate, $tags);
+        $this->send($data, $sampleRate, $tags);
     }
 
     /**
@@ -128,7 +128,7 @@ class Statsd
      * 
      * @return null
      **/
-    public static function send($data, $sampleRate = 1, array $tags = null)
+    public function send($data, $sampleRate = 1, array $tags = null)
     {
         // sampling
         $sampledData = array();
@@ -164,18 +164,11 @@ class Statsd
                 $value .= '|#' . $tags;
             }
 
-            socket_sendto($socket, "$stat:$value", strlen("$stat:$value"), 0, static::$server, 8125);
+            socket_sendto($socket, "$stat:$value", strlen("$stat:$value"), 0, $this->server, 8125);
         }
 
         socket_close($socket);
         
-    }
-
-    public static function configure($apiKey, $applicationKey, $datadogHost = 'https://app.datadoghq.com')
-    {
-        static::$apiKey = $apiKey;
-        static::$applicationKey = $applicationKey;
-        static::$datadogHost = $datadogHost;
     }
 
     /**
@@ -188,7 +181,7 @@ class Statsd
      *   http://api.datadoghq.com/events for the valid keys
      * @return null
      **/
-    public static function event($title, $vals = array())
+    public function event($title, $vals = array())
     {
         // Assemble the request
         $vals['title'] = $title;
@@ -204,9 +197,9 @@ class Statsd
         $body = json_encode($vals); // Added in PHP 5.3.0
 
         // Get the url to POST to
-        $url = static::$datadogHost . static::$eventUrl
-             . '?api_key='          . static::$apiKey
-             . '&application_key='  . static::$applicationKey;
+        $url = static::$datadogHost . $this->eventUrl
+             . '?api_key='          . $this->apiKey
+             . '&application_key='  . $this->applicationKey;
 
         // Set up the http request. Need the PECL pecl_http extension
         $r = new HttpRequest($url, HttpRequest::METH_POST);
