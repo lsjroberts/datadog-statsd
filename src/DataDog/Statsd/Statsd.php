@@ -11,6 +11,13 @@ namespace DataDog\Statsd;
  * I did make it the most effecient UDP process possible, and add tagging.
  * 
  * @author Alex Corley <anthroprose@gmail.com>
+ *
+ * =================================================
+ *
+ * Updated to fit PSR-2 and work with Laravel 4
+ *
+ * @author  Laurence Roberts <lsjroberts@gmail.com>
+ * 
  **/
  
 class Statsd
