@@ -29,6 +29,8 @@ class Statsd
     public $apiKey;
     public $applicationKey;
 
+    public $timings = array();
+
     /**
      * Log timing information
      *
@@ -39,6 +41,41 @@ class Statsd
     public function timing($stat, $time, $sampleRate = 1, array $tags = null)
     {
         $this->send(array($stat => "$time|ms"), $sampleRate, $tags);   
+    }
+
+    /**
+     * Start a timing log
+     * 
+     * @param  string  $stat       The metric to log timing info for.
+     * @param  float|1 $sampleRate The rate (0-1) for sampling
+     * @param  array  $tags        Optional tags for the metric
+     * 
+     * @return void
+     */
+    public function startTiming($stat, $sampleRate = 1, array $tags = null)
+    {
+        $this->timings[$stat] = array(
+            'start' => microtime(true),
+            'sampleRate' => $sampleRate,
+            'tags' => $tags
+        );
+    }
+
+    /**
+     * End a timing log and send to statsd
+     * 
+     * @param  string $stat The metric to log timing info for.
+     * 
+     * @return void
+     */
+    public function endTiming($stat)
+    {
+        if (isset($this->timings[$stat])) {
+            $timing = $this->timings[$stat];
+            $this->timing($stat, microtime(true) - $timing['start'], $timing['sampleRate'], $timing['tags']);
+        } else {
+            throw new Exception("Timing '" . $stat . "' has not been started");
+        }
     }
 
     /**

@@ -12,7 +12,7 @@ Installation
 Add the following to your `composer.json`:
 
 ```
-"lsjroberts/datadog-statsd": "1.0.*"
+"lsjroberts/datadog-statsd": "0.1.*"
 ```
 
 
