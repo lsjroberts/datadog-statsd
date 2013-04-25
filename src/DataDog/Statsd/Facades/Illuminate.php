@@ -1,4 +1,4 @@
-<?php namespace BrighterPeople\Bullhorn\Facades;
+<?php namespace DataDog\Statsd\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
