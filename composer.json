@@ -3,7 +3,7 @@
     "type": "library",
     "license": "MIT",
     "description": "DataDog Statsd client",
-    "keywords": ["DataDog", "PHP", "Statsd"],
+    "keywords": ["DataDog", "PHP", "Statsd", "Laravel"],
     "autoload": {
     	"psr-0" : { "": "src/" }
     }
