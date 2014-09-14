@@ -1,12 +1,14 @@
 <?php namespace DataDog\Statsd\Facades;
 
+use DataDog\Statsd\Statsd;
+
 class Agnostic
 {
     public static $instance = null;
 
     public static function getInstance()
     {
-        if (static::$instance === null) static::$instance = new static;
+        if (static::$instance === null) static::$instance = new Statsd;
         return static::$instance;
     }
 
